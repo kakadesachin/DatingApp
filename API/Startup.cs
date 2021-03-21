@@ -31,6 +31,7 @@ namespace API
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // This can also be referred as a dependency injection container.
         public void ConfigureServices(IServiceCollection services)
         {
             /*
