@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +14,12 @@ namespace API.Controllers
     public class AccountsController : BaseAPIController
     {
         private readonly DataContext _context;
-        public AccountsController(DataContext context)
+        // In order to handle JWTs we need to use Token Service,
+        // Hence we are injecting the ITokenService that we created to manage JWTs
+        private readonly ITokenService _tokenService;
+        public AccountsController(DataContext context, ITokenService tokenService)
         {
+            _tokenService = tokenService;
             _context = context;
         }
         [HttpPost("register")]
@@ -61,7 +66,7 @@ namespace API.Controllers
             }
         }
         [HttpPost("login")]
-        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             try
             {
@@ -73,15 +78,18 @@ namespace API.Controllers
                 }
                 using var hmac = new HMACSHA512(user.PasswordSalt);
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-                
+
                 for (int i = 0; i < computedHash.Length; i++)
                 {
-                    if (computedHash[i]!=user.PasswordHash[i])
+                    if (computedHash[i] != user.PasswordHash[i])
                     {
                         return Unauthorized("Invalid Password");
                     }
                 }
-                return user;
+                return new UserDto{
+                    Username=user.UserName,
+                    Token=_tokenService.CreateToken(user)
+                };
 
             }
             catch (Exception ex)
