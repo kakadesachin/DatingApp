@@ -15,8 +15,8 @@ namespace API.Data
     {
         public static async Task SeedUsers(DataContext context)
         {
-            Console.WriteLine("Waiting for you to attach the debugger if needed, else just enter");
-            Console.ReadLine();
+            // Console.WriteLine("Waiting for you to attach the debugger if needed, else just enter");
+            // Console.ReadLine();
             if (await context.Users.AnyAsync())
             {
                 return;
