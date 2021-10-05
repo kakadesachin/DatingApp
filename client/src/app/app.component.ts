@@ -15,26 +15,26 @@ export class AppComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.getUsers();
-    this.setCurrentUser();
+    //this.getUsers();
+    //this.setCurrentUser();
   }
-  setCurrentUser(){
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const user: User = JSON.parse(storedUser);
-      this.accountService.setCurrentUser(user);    
-    }
-    else{
-      this.accountService.setCurrentUser(undefined);
-    }
+  // setCurrentUser(){
+  //   const storedUser = localStorage.getItem('user');
+  //   if (storedUser) {
+  //     const user: User = JSON.parse(storedUser);
+  //     this.accountService.setCurrentUser(user);    
+  //   }
+  //   else{
+  //     this.accountService.setCurrentUser(undefined);
+  //   }
     
     
-  }
-  getUsers(){
-    this.http.get("https://localhost:5001/api/users").subscribe(response => {
-      this.users = response;
-    }, error=>{
-      console.log(error);
-    });
-  }
+  // }
+  // getUsers(){
+  //   this.http.get("https://localhost:5001/api/users").subscribe(response => {
+  //     this.users = response;
+  //   }, error=>{
+  //     console.log(error);
+  //   });
+  // }
 }

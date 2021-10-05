@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
         }
         else{
           this.toastr.error("You haven't signed in");
-          return null!;
+          return false;
         }
       })
     );
